@@ -27,7 +27,6 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(response);
     // 如果响应是二进制流，则直接返回，用于下载文件、Excel 导出等
     if (response.config.responseType === "blob") {
       return response;

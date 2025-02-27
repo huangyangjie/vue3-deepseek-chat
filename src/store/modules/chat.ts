@@ -64,7 +64,6 @@ export const useChatStore = defineStore("chat-store", {
       }
     },
     updateHistory(uuid: number, edit: Partial<Chat.History>) {
-      console.log('updateHistory', uuid, edit)
       const index = this.history.findIndex((item) => item.uuid === uuid);
       if (index !== -1) {
         this.history[index] = { ...this.history[index], ...edit };
@@ -81,7 +80,6 @@ export const useChatStore = defineStore("chat-store", {
     },
     // 根据uuid添加对话
     addChatByUuid(uuid: number, chat: Chat.Chat) {
-      console.log('addChatByUuid', uuid, chat)
       if (!uuid || uuid === 0) {
         if (this.history.length === 0) {
           const uuid = Date.now();
@@ -105,7 +103,6 @@ export const useChatStore = defineStore("chat-store", {
       }
     },
     updateChatByUuid(uuid: number, index: number, chat: Chat.Chat) {
-      console.log('updateChatByUuid', uuid, index, chat)
       if (!uuid || uuid === 0) {
         if (this.chat.length) {
           if (this.chat[0].data[index].reasoning == "思考中...") {

@@ -199,7 +199,6 @@ function handleStop() {
   }
 }
 onMounted(() => {
-  console.log('onMounted', prompt.value)
   if (!route.params.uuid) {
     chatStore.active = 1002
   }
@@ -212,7 +211,6 @@ onMounted(() => {
   scrollToBottom()
 })
 onUnmounted(() => {
-  console.log('onUnmounted')
   if (loading.value) controller.abort()
 })
 </script>
