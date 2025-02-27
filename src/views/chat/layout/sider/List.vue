@@ -32,11 +32,9 @@
         </div>
       </template>
       <el-popover virtual-triggering ref="popoverRef" placement="bottom-start" :visible="visible" effect="dark" :virtual-ref="buttonRef">
-        <template #content>
-          <div>
-            <el-button link @click="handleDelete"> 删除 </el-button>
-          </div>
-        </template>
+        <div>
+          <el-button link @click="handleDelete"> 删除 </el-button>
+        </div>
       </el-popover>
     </div>
   </el-scrollbar>
