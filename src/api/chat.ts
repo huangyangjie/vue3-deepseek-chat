@@ -32,10 +32,10 @@ export function chatList(params: TypeChatList) {
 //   });
 // }
 export function chatCompletions(stream: AbortSignal ,messages: Chat.ConversationMessage[]) {
-  return fetchRequest("/compatible-mode/v1/chat/completions", {
+  return fetchRequest("/chat/completions", {
     method: "POST",
     body: JSON.stringify({
-      model: "deepseek-r1",
+      model: import.meta.env.VITE_AI_MODEL,
       messages: messages,
       stream: true,
       stream_options: {
