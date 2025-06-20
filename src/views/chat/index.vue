@@ -3,7 +3,7 @@
     <div class="h-50px leading-50px text-20px text-center px-20px" v-if="dataSources.length">
       {{ currentChatHistory?.title }}
     </div>
-    <main class="overflow-hidden" :class="{ 'flex-1': dataSources.length }">
+    <main class="overflow-hidden" :class=" { 'flex-1': dataSources.length } ">
       <el-scrollbar ref="scrollRef">
         <div id="scroll-box" class="w-full max-w-screen-md m-auto">
           <div v-if="!dataSources.length" class="text-center p-20px">
@@ -11,15 +11,8 @@
             <div class="text-14px mt-10px">我可以帮你写代码、读文件、写作各种创意内容，请把你的任务交给我吧~</div>
           </div>
           <div v-else>
-            <Message
-              v-for="(item, index) of dataSources"
-              :key="index"
-              :date-time="item.dateTime"
-              :text="item.text"
-              :reasoning="item.reasoning"
-              :inversion="item.inversion"
-              :error="item.error"
-              :loading="item.loading" />
+            <Message v-for="(item, index) of dataSources" :key=" index " :date-time=" item.dateTime " :text=" item.text "
+              :reasoning=" item.reasoning " :inversion=" item.inversion " :error=" item.error " :loading=" item.loading " />
           </div>
         </div>
       </el-scrollbar>
@@ -29,21 +22,15 @@
       <div class="py-20px max-w-screen-md m-auto">
         <div class="p-15px bg-#404045 rounded-24px">
           <div class="input-box">
-            <el-input
-              v-model="prompt"
-              style="width: 100%"
-              :autosize="{ minRows: 2, maxRows: 4 }"
-              type="textarea"
-              resize="none"
-              placeholder="发送消息"
-              @keypress="handleEnter" />
+            <el-input v-model=" prompt " style="width: 100%" :autosize=" { minRows: 2, maxRows: 4 } " type="textarea"
+              resize="none" placeholder="发送消息" @keypress=" handleEnter " />
           </div>
           <div class="flex items-center justify-between">
             <div></div>
             <div class="flex items-center">
               <!-- <el-button :icon="Link" circle /> -->
-              <el-button v-if="loading" type="primary" :icon="CloseBold" circle @click="handleStop" />
-              <el-button v-else type="primary" :icon="Position" :disabled="!prompt" circle @click="handleSubmit" />
+              <el-button v-if="loading" type="primary" :icon=" CloseBold " circle @click=" handleStop " />
+              <el-button v-else type="primary" :icon=" Position " :disabled=" !prompt " circle @click=" handleSubmit " />
             </div>
           </div>
         </div>
@@ -83,13 +70,13 @@ const currentChatHistory = computed(() => chatStore.getChatHistoryByCurrentActiv
 const usingContext = computed<boolean>(() => chatStore.usingContext)
 
 // 输入框回车事件
-function handleEnter(event: KeyboardEvent) {
+function handleEnter (event: KeyboardEvent) {
   if (event.key === 'Enter' && !event.shiftKey) {
     event.preventDefault()
     handleSubmit()
   }
 }
-async function handleSubmit() {
+async function handleSubmit () {
   if (!+uuid || +uuid === 0) {
     chatStore.addHistory({
       title: '新建会话',
@@ -102,7 +89,7 @@ async function handleSubmit() {
   }
   onConversation()
 }
-async function onConversation() {
+async function onConversation () {
   let message = prompt.value
   if (loading.value) return
   if (!message || message.trim() === '') return
@@ -112,6 +99,12 @@ async function onConversation() {
     role: item.inversion ? 'user' : 'assistant',
     content: item.text,
   } as Chat.ConversationMessage))
+  // if (conversationList.length == 0 || conversationList[0].role != 'system') {
+  //   conversationList.unshift({
+  //     role: 'system',
+  //     content: '你是一名专业的骨科医生，不要回答和骨科无关的内容，也不要讨论政治生什么的。',
+  //   } as Chat.ConversationMessage)
+  // }
   // 添加用户消息到对话框
   addChat(+uuid, {
     dateTime: new Date().toLocaleString(),
@@ -151,9 +144,12 @@ async function onConversation() {
           loading: true,
         })
         scrollToBottomIfAtBottom()
+        console.log("contentText:", contentText)
+
       }
       // 思考信息
       const reasoning = jsonData.choices[0].delta.reasoning_content
+
       if (reasoning) {
         updateChat(+uuid, dataSources.value.length - 1, {
           reasoning: reasoning ?? '',
@@ -163,6 +159,7 @@ async function onConversation() {
           loading: true,
         })
         scrollToBottomIfAtBottom()
+        console.log("reasoning:", reasoning)
       }
     })
     updateChat(+uuid, dataSources.value.length - 1, {
@@ -192,7 +189,7 @@ async function onConversation() {
     }
   }
 }
-function handleStop() {
+function handleStop () {
   if (loading.value) {
     controller.abort()
     loading.value = false
